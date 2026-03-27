@@ -1,0 +1,39 @@
+﻿@using Presentation.WebApp.Services
+@inject IFaqService faqService
+@{
+    var result = await faqService.GetFaqsAsync();
+}
+
+@if (result.Succeeded && result.Faqs?.Count > 0)
+{
+ <section class="section__faq">
+    <div class="container">
+        <div class="faq-area">
+            <div class="title">
+                <div class="section-title">Frequently Asked Questions</div>
+                <h2>Common questions about gym and training</h2>
+            </div>
+            <img src="images/faq-image.png" alt="" />
+            <div class="accordion" data-accordion>
+              
+            @foreach (var item in result.Faqs)
+            {
+                <div class="accordion-item">
+                    <div class="accordion-title">
+                        <button type="button" class="accordion-trigger" aria-expanded="@(item.Id == 1 ? "true" : "false")" aria-controls="accordion-panel-@item.Id" id="accordion-trigger-@item.Id">
+                            Q@(item.Id). @item.Title
+                        </button>
+                    </div>
+                    <div id="accordion-panel-@item.Id" class="accordion-panel" role="region" aria-labelledby="accordion-trigger-@item.Id">
+                        <div class="accordion-content">
+                            @Html.Raw(item.Content)
+                        </div>
+                    </div>
+                </div>
+            }     
+            
+            </div>
+        </div>
+    </div>
+</section>   
+}

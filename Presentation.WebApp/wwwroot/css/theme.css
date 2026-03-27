@@ -1,0 +1,71 @@
+﻿:root {
+    /* fonts */
+    --font-default: "DM Sans", sans-serif;
+    --font-heading: "Poppins", sans-serif;
+    --font-fa: "Font Awesome";
+    
+    /* colors */
+    --theme-color: #D6EB31;
+    --dark-color: #27252F;
+    --dark-color-t: rgba(39, 37, 47, 0.20);
+    --dark-gray-color: #6F6F6F; 
+    --gray-color: #D9D9D9;
+    --light-color: #F7F7F7;
+    --white-color: #FFFFFF;
+    --danger-color: #CE2B2BAF;
+
+    --body-background-color: var(--light-color);
+
+    --text-color: var(--dark-gray-color);
+    --heading-color: var(--dark-color);
+
+    --border-color: var(--text-color);
+    --border-accent-color: var(--theme-color);
+
+    --link-color: var(--text-color);
+    --link-hover-color: var(--gray-color);
+   
+    --checklist-icon-color: var(--theme-color);
+
+    --menu-item-link-color: var(--white-color);
+    --menu-item-link-hover-color: var(--theme-color);
+    --menu-item-link-active-color: var(--theme-color);
+
+    --form-label-text-color: var(--dark-color);
+    --form-input-text-color: var(--dark-color);
+    --form-input-border-color: var(--light-color);
+    --form-input-background-color: var(--light-color);
+    --form-input-border-focus-color: var(--dark-gray-color);
+    --form-field-validation-error-text-color: var(--danger-color);
+
+    --button-background-color: var(--theme-color);
+    --button-border-color: var(--theme-color);
+    --button-text-color: var(--dark-color);
+    --button-background-hover-color: var(--dark-color);
+    --button-border-hover-color: var(--dark-color);
+    --button-text-hover-color: var(--white-color);
+    --button-accent-background-hover-color: var(--white-color);
+    --button-accent-border-hover-color: var(--white-color);
+    --button-accent-text-hover-color: var(--dark-color);
+
+    --header-background-color: var(--dark-color);
+    --header-text-color: var(--white-color);
+
+    --footer-background-color: var(--dark-color);
+    --footer-text-color: var(--white-color);
+
+    --section-background-color: var(--white-color);
+    --section-text-color: var(--dark-gray-color);
+
+    --section-title-background-color: var(--dark-color);
+    --section-title-text-color: var(--white-color);
+    --section-title-dot-color: var(--theme-color);
+
+    --quote-background-color: var(--white-color);
+    --quote-text-color: var(--dark-color);
+
+    --brands-background-color: var(--theme-color);
+
+    --contact-information-area-background-color: var(--dark-color-t);
+    --contact-information-area-text-color: var(--white-color)
+}

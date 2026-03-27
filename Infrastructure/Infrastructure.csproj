@@ -23,13 +23,5 @@
 		<ProjectReference Include="..\Application\Application.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="Identity\Data\" />
-	  <Folder Include="Identity\Extensions\" />
-	  <Folder Include="Identity\Services\" />
-	  <Folder Include="Perisistence\Contexts\" />
-	  <Folder Include="Perisistence\Extensions\" />
-	</ItemGroup>
-
 </Project>
 

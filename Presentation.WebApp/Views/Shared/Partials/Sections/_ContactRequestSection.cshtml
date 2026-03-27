@@ -1,0 +1,43 @@
+﻿<section class="section__contact-form">
+    <div class="container">
+        <div class="contact-form-area">
+            <img src="images/contact-us-image.png" alt="woman working out and lifting a bar">
+
+            <form id="contact-form" method="post" asp-action="Index" asp-controller="Support" novalidate>
+                <div data-type="title" class="title">
+                    <h2>Contact Us Today</h2>
+                    <p>Ready to begin your fitness journey? Contact CoreFitnesss today and let our expert trainers guide you with the right program and support.</p>
+                </div>
+
+                <div data-type="firstname" class="form-group">
+                    <label class="form-label">First Name</label>
+                    <input class="form-input" placeholder="Enter First Name" />
+                    <span class="form-field-validation">First name is required</span>
+                </div>
+                <div data-type="lastname" class="form-group">
+                    <label class="form-label">Last Name</label>
+                    <input class="form-input" placeholder="Enter Last Name" />
+                    <span class="form-field-validation">Last name is required</span>
+                </div>
+                <div data-type="email" class="form-group">
+                    <label class="form-label">Email Address</label>
+                    <input class="form-input" placeholder="username@example.com" />
+                    <span class="form-field-validation">Email address is required</span>
+                </div>
+                <div data-type="phone" class="form-group">
+                    <label class="form-label">Phone Number</label>
+                    <input class="form-input" placeholder="Enter Phone Number" />
+                    <span class="form-field-validation">Phone number must be valid</span>
+                </div>
+                <div data-type="message" class="form-group">
+                    <label class="form-label">Message</label>
+                    <textarea class="form-input" placeholder="Enter Message"></textarea>
+                    <span class="form-field-validation">Message is required</span>
+                </div>
+                <div data-type="submit" class="form-group">
+                    <button class="btn" type="submit">Submit Message</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
