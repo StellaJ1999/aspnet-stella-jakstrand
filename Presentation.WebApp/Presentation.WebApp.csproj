@@ -12,6 +12,14 @@
     <Folder Include="Areas\Authentication\Data\" />
     <Folder Include="Areas\Authentication\Models\" />
     <Folder Include="Areas\Authentication\Views\" />
+    <Folder Include="Views\Activities\" />
+    <Folder Include="Views\FitnessCenters\" />
+    <Folder Include="Views\Home\" />
+    <Folder Include="Views\Memberships\" />
+    <Folder Include="Views\Training\" />
+    <Folder Include="Views\Support\" />
+    <Folder Include="Views\Shared\Partials\Common\" />
+    <Folder Include="Views\Shared\Partials\Sections\" />
   </ItemGroup>
 
   <ItemGroup>
