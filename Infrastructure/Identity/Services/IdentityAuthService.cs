@@ -50,7 +50,6 @@ public sealed class IdentityAuthService(UserManager<AppUser> userManager, SignIn
 
         if (!result.Succeeded)
             return AuthResult.Failed("Invalid email or password.");
-
         if (result.IsLockedOut)
             return AuthResult.Failed("User account is locked out. Please contact support.");
 

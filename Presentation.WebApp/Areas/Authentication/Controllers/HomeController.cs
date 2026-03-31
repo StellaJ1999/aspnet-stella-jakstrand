@@ -15,7 +15,7 @@ public class HomeController(IAuthService authService) : Controller
     }
 
     [HttpPost("Registration/sign-up")]
-    public async Task<IActionResult> SignIn(SignUpForm form)
+    public async Task<IActionResult> Index(SignUpForm form)
     {
 
         if(!ModelState.IsValid)
@@ -25,6 +25,15 @@ public class HomeController(IAuthService authService) : Controller
         HttpContext.Session.SetString("reg_email", form.Email);
 
         return RedirectToAction(nameof(SetPassword));
+    }
+
+    [HttpGet("registration/set-password")]
+    public IActionResult SetPassword()
+    {
+        if (string.IsNullOrWhiteSpace(HttpContext.Session?.GetString("reg_email")))
+            return RedirectToAction(nameof(Index));
+
+        return View();
     }
 
     [HttpPost("Registration/set-password")]
