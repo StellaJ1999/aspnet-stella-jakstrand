@@ -41,10 +41,12 @@ public class SupportController : Controller
             form.Phone,
             form.Message
         );
+
         var ok = await _contactRequestService.CreateContactRequestAsync(input);
 
-        //await contactFormService.RegisterContactRequestAsync(input, ct);
-        TempData["Message"] = ok ? "Contact request sent." : "Failed to send contact request. Please try again.";
+        // Detta är den text visas under knappen efter att POST:en är klar.
+        TempData["Message"] = ok ? "Contact request sent." : "Contact request failed to send.";
+
         return RedirectToAction(nameof(Index));
     }
 }

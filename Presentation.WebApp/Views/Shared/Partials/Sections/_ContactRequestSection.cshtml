@@ -1,5 +1,11 @@
 ﻿@model Presentation.Models.CustomerService.ContactForm
 
+@{
+    // Vi läser TempData en gång så vi kan visa ett “flash message” i UI efter POST.
+    // TempData finns bara för nästa request och försvinner efter att den har lästs, så vid refresh syns inget längre.
+    var statusMessage = TempData["Message"]?.ToString();
+}
+
 <section class="section__contact-form">
     <div class="container">
         <div class="contact-form-area">
@@ -38,6 +44,12 @@
                 </div>
                 <div data-type="submit" class="form-group">
                     <button class="btn" type="submit">Submit Message</button>
+
+                    @* Renderas bara efter en submit (redirect) när TempData finns, och är borta vid refresh *@
+                    @if (!string.IsNullOrWhiteSpace(statusMessage))
+                    {
+                        <span class="contact-form-status" aria-live="polite">@statusMessage</span>
+                    }
                 </div>
             </form>
         </div>

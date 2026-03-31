@@ -20,18 +20,19 @@
             <input class="form-input" asp-for="Email" />
             <span asp-validation-for="Email" class="field-validation"></span>
         </div>
+
+        <div data-type="terms" class="form-group form-checkbox-group">
+            <input class="form-input" asp-for="TermsAndConditions" />
+            <label class="form-label" asp-for="TermsAndConditions"> I agree to the <a href="/terms-and-conditions">Terms and Conditions</a> </label>
+            <span asp-validation-for="TermsAndConditions" class="field-validation"></span>
+        </div>
+
+        <div class="form-errormessage">
+            <span class="field-validation-error" asp-validation-for="ErrorMessage"></span>
+        </div>
+
     </form>
 
     <button class="btn" type="submit"> Continue </button>
-
-    <div data-type="terms" class="form-group form-checkbox-group">
-        <input class="form-input" asp-for="TermsAndConditions" />
-        <label class="form-label" asp-for="TermsAndConditions"> I agree to the <a href="/terms-and-conditions">Terms and Conditions</a> </label>
-        <span asp-validation-for="TermsAndConditions" class="field-validation"></span>
-    </div>
-
-    <div class="form-errormessage">
-        <span class="field-validation-error" asp-validation-for="ErrorMessage"></span>
-    </div>
 
 </section>
