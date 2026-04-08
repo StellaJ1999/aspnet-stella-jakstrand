@@ -1,10 +1,11 @@
-﻿using Application.Abstractions.Authentication;
-using Application.Common.Results;
+﻿using Application.Abstractions.Identity;
+using Application.Common.Outputs;
+using Infrastructure.Identity.Models;
 using Microsoft.AspNetCore.Identity;
 
 namespace Infrastructure.Identity.Services;
 
-public sealed class IdentityAuthService(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager) : IAuthService
+public sealed class IdentityAuthService(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, RoleManager<IdentityRole> roleManager) : IAuthService
 {
 
     public async Task<AuthResult> SignUpUserAsync(string email, string password, string? roleName = null)
@@ -30,33 +31,44 @@ public sealed class IdentityAuthService(UserManager<AppUser> userManager, SignIn
             return AuthResult.Failed(created.Errors.FirstOrDefault()?.Description ?? "Unable to create user");
         }
 
+        if (!string.IsNullOrWhiteSpace(roleName))
+        {
+            roleName = roleName.Trim();
+
+            if (!await roleManager.RoleExistsAsync(roleName))
+                return AuthResult.Failed($"Role '{roleName}' does not exist.");
+
+            var addedToRole = await userManager.AddToRoleAsync(user, roleName);
+            if (!addedToRole.Succeeded)
+                return AuthResult.Failed(addedToRole.Errors.FirstOrDefault()?.Description ?? $"Unable to add user to role '{roleName}'.");
+        }
+
         return AuthResult.Ok();
     }
 
     public async Task<AuthResult> SignInUserAsync(string email, string password, bool rememberMe)
     {
         if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
-        {
-            return AuthResult.Failed("Email and password must be provided.");
-        }
+            return AuthResult.InvalidCredentials();
 
-        var user = await userManager.FindByEmailAsync(email);
-
+        var user = await userManager.FindByEmailAsync(email.Trim());
         if (user is null)
-            return AuthResult.Failed("Invalid email or password.");
+            return AuthResult.InvalidCredentials();
 
+        var result = await signInManager.PasswordSignInAsync(user, password, rememberMe, lockoutOnFailure: false);
+        if (result.IsLockedOut)
+            return AuthResult.LockedOut();
 
-        var result = await signInManager.PasswordSignInAsync(email, password, rememberMe, false);
+        if (result.IsNotAllowed)
+            return AuthResult.NotAllowed();
+
+        if (result.RequiresTwoFactor)
+            return AuthResult.RequireTwoFactorAuth();
 
         if (!result.Succeeded)
-            return AuthResult.Failed("Invalid email or password.");
-        if (result.IsLockedOut)
-            return AuthResult.Failed("User account is locked out. Please contact support.");
+            return AuthResult.Failed();
 
-        if (result.Succeeded)
-            return AuthResult.Ok();
-
-        return AuthResult.Failed("An unknown error occurred during sign-in.");
+        return AuthResult.Ok();
     }
 
     public Task SignOutUserAsync() => signInManager.SignOutAsync();

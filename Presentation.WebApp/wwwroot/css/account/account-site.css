@@ -1,0 +1,48 @@
+﻿.account-layout {
+    display: grid;
+    grid-template-rows: auto auto 1fr auto;
+    gap: 1rem;
+    height: 100dvh;
+    padding: 1rem;
+
+    .page-title {
+        margin-top: 0;
+    }
+
+    .container {
+        display: grid;
+        grid-template-columns: 1fr 3fr;
+        grid-template-areas: "aside main";
+        gap: 4rem;
+
+        aside {
+            grid-area: aside;
+            display: grid;
+            align-items:start;
+            gap: 1rem;
+        }
+
+        main {
+            grid-area: main;
+
+            h2 {
+                font-size:1em;
+            }
+        }
+    }
+
+}
+
+
+/* about me */
+.about-me {
+    background-color: var(--section-background-color);
+    padding: 1rem 4rem 2rem;
+    margin-bottom: 2rem;
+    border-radius: 20px;
+
+    [data-type="submit"] {
+        display: flex;
+        justify-content: flex-end;
+    }
+}

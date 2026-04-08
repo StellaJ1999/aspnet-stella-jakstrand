@@ -12,8 +12,9 @@
 
     <hr />
 
-    <form class="signin-form" method="post" asp-area="Authentication" asp-controller="Home" asp-action="SignIn" novalidate>
+    <form class="signin-form" method="post" asp-area="Authentication" asp-controller="SignIn" asp-action="SignIn" novalidate>
         @Html.AntiForgeryToken()
+        <input type="hidden" name="returnUrl" value="@ViewBag.ReturnUrl" />
 
         <div class="form-group">
             <label class="form-label" asp-for="Email"></label>

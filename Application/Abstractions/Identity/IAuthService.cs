@@ -1,7 +1,7 @@
 ﻿
-using Application.Common.Results;
+using Application.Common.Outputs;
 
-namespace Application.Abstractions.Authentication;
+namespace Application.Abstractions.Identity;
 
 public interface IAuthService
 {

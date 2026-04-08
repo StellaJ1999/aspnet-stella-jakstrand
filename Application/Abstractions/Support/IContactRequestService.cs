@@ -1,4 +1,5 @@
-﻿using Domain.Support;
+﻿using Application.Support.Inputs;
+using Domain.Support;
 
 namespace Application.Abstractions.Support;
 

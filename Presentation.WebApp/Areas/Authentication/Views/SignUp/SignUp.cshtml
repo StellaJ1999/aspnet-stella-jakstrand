@@ -12,7 +12,7 @@
 
     <hr />
 
-    <form method="post" asp-area="Authentification" asp-controller="Home" asp-action="Index" novalidate>
+    <form method="post" asp-area="Authentication" asp-controller="SignUp" asp-action="SignUp" novalidate>
         @Html.AntiForgeryToken()
 
         <div class="form-group">
@@ -31,8 +31,6 @@
             <span class="field-validation-error" asp-validation-for="ErrorMessage"></span>
         </div>
 
+        <button class="btn" type="submit"> Continue </button>
     </form>
-
-    <button class="btn" type="submit"> Continue </button>
-
 </section>

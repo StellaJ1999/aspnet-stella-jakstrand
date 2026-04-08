@@ -1,4 +1,6 @@
-﻿public sealed record ContactRequestInput
+﻿namespace Application.Support.Inputs;
+
+public sealed record ContactRequestInput
 (
     string FirstName,
     string LastName,

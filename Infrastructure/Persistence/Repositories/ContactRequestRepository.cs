@@ -1,4 +1,5 @@
 ﻿using Application.Abstractions.Support;
+using Application.Support.Inputs;
 using Domain.Support;
 using Infrastructure.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;

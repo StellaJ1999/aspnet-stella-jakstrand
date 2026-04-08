@@ -1,0 +1,81 @@
+﻿@using Presentation.WebApp.Areas.Account.Models
+@model AboutMeViewModel
+@{
+    ViewData["Title"] = "My Account";
+}
+
+<aside>
+    <div class="profile-image">
+        @if (!string.IsNullOrWhiteSpace(Model.ProfileImageUrl))
+        {
+            <img src="@Url.Content(Model.ProfileImageUrl)" alt="User Profile Image" />
+        }
+        else
+        {
+            <img src="~/images/profile-image-avatar.png" alt="user profile image" />
+        }
+    </div>
+
+    <nav class="account-options-menu options-menu">
+        <div class="options-menu-title">
+            Menu
+        </div>
+        <ul class="options">
+            <li class="option-item">
+                <a class="option-item-link" asp-area="Account" asp-controller="Account" asp-action="AboutMe">About Me</a>
+            </li>
+            <li class="option-item">
+                <a class="option-item-link" asp-area="Account" asp-controller="AccountMembership" asp-action="Index">My Membership</a>
+            </li>
+            <li class="option-item">
+                <a class="option-item-link" asp-area="Account" asp-controller="AccountBookings" asp-action="Index">My Bookings</a>
+            </li>
+            <li class="option-item">
+                <a class="option-item-link" asp-area="Account" asp-controller="Account" asp-action="SignOut">Sign Out</a>
+            </li>
+        </ul>
+    </nav>
+
+</aside>
+<main>
+    <section class="about-me">
+        <div class="title">
+            <h3>About Me</h3>
+            <hr />
+        </div>
+        <form id="aboutMeForm" method="post" enctype="multipart/form-data" asp-area="Account" asp-controller="Account" asp-action="AboutMe" novalidate>
+            <div data-type="firstname" class="form-group">
+                <label class="form-label" asp-for="AboutMeForm.FirstName"></label>
+                <input class="form-input" asp-for="AboutMeForm.FirstName" />
+                <span class="form-field-validation" asp-validation-for="AboutMeForm.FirstName"></span>
+            </div>
+            <div data-type="lastname" class="form-group">
+                <label class="form-label" asp-for="AboutMeForm.LastName"></label>
+                <input class="form-input" asp-for="AboutMeForm.LastName" />
+                <span class="form-field-validation" asp-validation-for="AboutMeForm.LastName"></span>
+            </div>
+            <div data-type="email" class="form-group">
+                <label class="form-label" asp-for="AboutMeForm.Email"></label>
+                <input class="form-input" asp-for="AboutMeForm.Email" readonly />
+                <span class="form-field-validation" asp-validation-for="AboutMeForm.Email"></span>
+            </div>
+            <div data-type="phone" class="form-group">
+                <label class="form-label" asp-for="AboutMeForm.PhoneNumber"></label>
+                <input class="form-input" asp-for="AboutMeForm.PhoneNumber" />
+                <span class="form-field-validation" asp-validation-for="AboutMeForm.PhoneNumber"></span>
+            </div>
+            <hr />
+            <div data-type="file" class="form-group">
+                <label class="form-label" asp-for="AboutMeForm.ProfileImage"></label>
+                <input class="form-input" asp-for="AboutMeForm.ProfileImage" />
+                <span class="form-field-validation" asp-validation-for="AboutMeForm.ProfileImage"></span>
+            </div>
+            <div data-type="submit" class="form-group">
+                <button class="btn" type="submit">Save</button>
+            </div>   
+
+            <div asp-validation-summary="ModelOnly"></div>
+            @Html.AntiForgeryToken()
+        </form>
+    </section>
+</main>

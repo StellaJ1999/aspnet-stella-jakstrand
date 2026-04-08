@@ -24,14 +24,29 @@
     </nav>
     <nav class="account-menu">
         <ul class="menu">
-         
+           @if (User.Identity?.IsAuthenticated == true)
+            {
+                @if (User.IsInRole("Admin"))
+                {
+                    <li class="menu-item">
+                        <a class="menu-item-link" asp-area="Admin" asp-controller="Admin" asp-action="Index">Admin Center</a>
+                    </li>
+                }
+
                 <li class="menu-item">
-                    <a class="menu-item-link" asp-area="Authentication" asp-action="Index" asp-controller="Home">Become Member</a>
+                    <a class="btn accent" asp-area="Account" asp-controller="Account" asp-action="Index">My Account</a>
+                </li>
+            }
+            else
+            {
+                <li class="menu-item">
+                    <a class="menu-item-link" asp-area="Authentication" asp-controller="SignUp" asp-action="SignUp">Become Member</a>
                 </li>
 
                 <li class="menu-item">
-                    <a class="btn accent" asp-area="Authentication" asp-action="SignIn" asp-controller="Home">Sign In</a>
+                    <a class="btn accent" asp-area="Authentication" asp-controller="SignIn" asp-action="SignIn">Sign In</a>
                 </li>
+            }
         </ul>
     </nav>
 

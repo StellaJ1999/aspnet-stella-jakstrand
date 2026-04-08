@@ -1,4 +1,5 @@
-﻿using Application.Abstractions.Authentication;
+﻿using Application.Abstractions.Identity;
+using Infrastructure.Identity.Models;
 using Infrastructure.Identity.Services;
 using Infrastructure.Persistence.Contexts;
 using Microsoft.AspNetCore.Identity;
@@ -15,7 +16,7 @@ public static class IdentityServiceCollectionExtension
         ArgumentNullException.ThrowIfNull(configuration);
         ArgumentNullException.ThrowIfNull(environment);
 
-        services.AddIdentity<AppUser, AppRole>(x =>
+        services.AddIdentity<AppUser, IdentityRole>(x =>
         {
 
             x.SignIn.RequireConfirmedAccount = false;
@@ -26,12 +27,12 @@ public static class IdentityServiceCollectionExtension
 
         services.ConfigureApplicationCookie(x =>
         {
-            var loginPath = configuration?.GetValue<string>("CookieSetting:LoginPath") ?? "/sign-in";
-            var logoutPath = configuration?.GetValue<string>("CookieSetting:LogoutPath") ?? "/sign-out";
-            var accessDeniedPath = configuration?.GetValue<string>("CookieSetting:AccessDeniedPath") ?? "/access-denied";
-            var cookieName = configuration?.GetValue<string>("CookieSetting:CookieName") ?? "MyAppCookie";
-            var MaxAgeInDays = configuration?.GetValue<int>("CookieSetting:MaxAgeInDays") ?? 90;
-            var ExpiresInDays = configuration?.GetValue<int>("CookieSetting:ExpiresInDays") ?? 30;
+            var loginPath = configuration?.GetValue<string>("CookieSettings:LoginPath") ?? "/sign-in";
+            var logoutPath = configuration?.GetValue<string>("CookieSettings:LogoutPath") ?? "/sign-out";
+            var accessDeniedPath = configuration?.GetValue<string>("CookieSettings:DeniedPath") ?? "/access-denied";
+            var cookieName = configuration?.GetValue<string>("CookieSettings:CookieName") ?? "MyAppCookie";
+            var MaxAgeInDays = configuration?.GetValue<int>("CookieSettings:MaxAgeInDays") ?? 90;
+            var ExpiresInDays = configuration?.GetValue<int>("CookieSettings:ExpiresInDays") ?? 30;
 
             x.LoginPath = loginPath;
             x.LogoutPath = logoutPath;
@@ -43,6 +44,8 @@ public static class IdentityServiceCollectionExtension
         });
 
         services.AddScoped<IAuthService, IdentityAuthService>();
+        services.AddScoped<IUserService, IdentityUserService>();
+
         return services;
     }
 }

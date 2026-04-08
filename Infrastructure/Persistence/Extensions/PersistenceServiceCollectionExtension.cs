@@ -16,22 +16,18 @@ public static class PersistenceServiceCollectionExtension
         ArgumentNullException.ThrowIfNull(configuration);
         ArgumentNullException.ThrowIfNull(environment);
 
-        var useInMemory = environment.IsDevelopment() && configuration.GetValue<bool>("Persistence:UseInMemory");
-
-        if (useInMemory)
-        {
-            // Om vi använder in-memory databas så kan vi ge den ett namn (annars används ett slumpmässigt namn varje gång,
-            // vilket gör att datan inte bevaras mellan olika körningar av applikationen).
-
-            var dbName = configuration.GetValue<string>("Persistence:InMemoryDatabaseName") ?? "DymlecoDevelopementDB";
-            services.AddDbContext<PersistenceContext>(x => x.UseInMemoryDatabase(dbName));
-            return services;
-        }
-
         var connectionString = configuration.GetConnectionString("SqlConnection")
             ?? throw new InvalidOperationException("Connection string 'SqlConnection' was not found.");
 
-        services.AddDbContext<PersistenceContext>(x => x.UseSqlServer(connectionString));
+        if (environment.IsDevelopment())
+        {
+            services.AddDbContext<PersistenceContext>(x => x.UseSqlite(connectionString));
+        }
+        else
+        {
+            services.AddDbContext<PersistenceContext>(x => x.UseSqlServer(connectionString));
+        }
+
         return services;
     }
 }

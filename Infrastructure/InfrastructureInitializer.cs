@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 // InfrastructureInitializer körs vid applikationsstart (innan appen börjar ta emot HTTP-requests).
 namespace Infrastructure;
@@ -26,20 +25,29 @@ public class InfrastructureInitializer
 
         // Om databasen är relationsdatabas (t.ex. SQL Server, PostgreSQL) så kör vi EF migrations.
         //Annars (t.ex. SQLite i minnet) så skapar vi databasen direkt från EF-modellerna.
-        if (db.Database.IsRelational())
-        {
-            await db.Database.MigrateAsync();
-        }
-        else
+        if (env.IsDevelopment())
         {
             await db.Database.EnsureCreatedAsync();
         }
+        else
+        {
+            try
+            {
+                await db.Database.MigrateAsync();
+            }
+            catch { }
+        }
+
         // Seeda bara i utvecklingsmiljö, eller om det är uttryckligen aktiverat i konfigurationen
 
         var seedDefaultAdmin = cfg.GetValue<bool>("Seed:DefaultAdmin");
+
         if (env.IsDevelopment() && seedDefaultAdmin)
         {
-            await IdentityInitializer.AddDefaultAdmin(scope.ServiceProvider);
+            // Seeda default roller och admin-konton i Identity-databasen.
+            await IdentityInitializer.InitilizeDefaultRolesAsync(scope.ServiceProvider);
+            await IdentityInitializer.InitilizeDefaultAdminAccountsAsync(scope.ServiceProvider);
         }
+
     }
 }

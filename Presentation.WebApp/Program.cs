@@ -19,6 +19,7 @@ builder.Services.AddRouting(x => x.LowercaseUrls = true);
 
 var app = builder.Build();
 
+
 app.UseHsts();
 app.UseHttpsRedirection();
 app.UseRouting();
@@ -30,10 +31,9 @@ app.UseAuthorization();
 app.MapStaticAssets();
 
 app.MapControllerRoute(
-            name: "areas",
-            pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
-          ).WithStaticAssets();
-
+    name: "areas",
+    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}")
+    .WithStaticAssets();
 
 app.MapControllerRoute(
     name: "default",
