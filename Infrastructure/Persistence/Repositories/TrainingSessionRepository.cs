@@ -2,11 +2,13 @@
 using Application.Training.Inputs;
 using Domain.Training;
 using Infrastructure.Persistence.Contexts;
+using Infrastructure.Persistence.Repositories.Base;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence.Repositories;
 
-internal class TrainingSessionRepository(PersistenceContext db) : ITrainingSessionRepository
+internal class TrainingSessionRepository(PersistenceContext db)
+    : RepositoryBase(db), ITrainingSessionRepository
 {
     public async Task<bool> CreateTrainingSessionAsync(TrainingSessionInput model)
     {
@@ -21,23 +23,23 @@ internal class TrainingSessionRepository(PersistenceContext db) : ITrainingSessi
             createdUtc: model.CreatedUtc
         );
 
-        db.TrainingSessions.Add(entity);
-        return await db.SaveChangesAsync() > 0;
+        Db.TrainingSessions.Add(entity);
+        return await SaveChangesAsync() > 0;
     }
 
     public async Task<bool> DeleteTrainingSessionAsync(Guid sessionId)
     {
-        var entity = await db.TrainingSessions.FirstOrDefaultAsync(x => x.Id == sessionId);
+        var entity = await Db.TrainingSessions.FirstOrDefaultAsync(x => x.Id == sessionId);
         if (entity is null)
             return false;
 
-        db.TrainingSessions.Remove(entity);
-        return await db.SaveChangesAsync() > 0;
+        Db.TrainingSessions.Remove(entity);
+        return await SaveChangesAsync() > 0;
     }
 
     public async Task<IReadOnlyList<TrainingSession>> GetAllAsync()
     {
-        return await db.TrainingSessions
+        return await Db.TrainingSessions
             .Include(x => x.Bookings)
             .AsNoTracking()
             .OrderBy(x => x.StartTime)
@@ -46,16 +48,16 @@ internal class TrainingSessionRepository(PersistenceContext db) : ITrainingSessi
 
     public async Task<TrainingSession?> GetByIdAsync(Guid id)
     {
-        return await db.TrainingSessions
-                        .Include(x => x.Bookings)
-                        .FirstOrDefaultAsync(x => x.Id == id);
+        return await Db.TrainingSessions
+            .Include(x => x.Bookings)
+            .FirstOrDefaultAsync(x => x.Id == id);
     }
 
     public async Task<bool> UpdateTrainingSessionAsync(TrainingSessionInput model)
     {
         ArgumentNullException.ThrowIfNull(model);
 
-        var entity = await db.TrainingSessions.FirstOrDefaultAsync(x => x.Id == model.Id);
+        var entity = await Db.TrainingSessions.FirstOrDefaultAsync(x => x.Id == model.Id);
         if (entity is null)
             return false;
 
@@ -66,6 +68,6 @@ internal class TrainingSessionRepository(PersistenceContext db) : ITrainingSessi
             maxParticipants: model.MaxParticipants
         );
 
-        return await db.SaveChangesAsync() > 0;
+        return await SaveChangesAsync() > 0;
     }
 }

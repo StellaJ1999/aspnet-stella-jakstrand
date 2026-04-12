@@ -9,11 +9,14 @@ namespace Presentation.WebApp.Controllers;
 [Route("training")]
 public class TrainingController : Controller
 {
-    private readonly ITrainingSessionService? _sessions;
-    private readonly ITrainingSessionBookingService? _bookings;
+    private readonly ITrainingSessionService _sessions;
+    private readonly ITrainingSessionBookingService _bookings;
 
     public TrainingController(ITrainingSessionService sessions, ITrainingSessionBookingService bookings)
     {
+        ArgumentNullException.ThrowIfNull(sessions);
+        ArgumentNullException.ThrowIfNull(bookings);
+
         _sessions = sessions;
         _bookings = bookings;
     }
@@ -38,14 +41,16 @@ public class TrainingController : Controller
                 var isFull = bookedCount >= s.MaxParticipants;
                 var isBooked = bookedIds.Contains(s.Id);
 
+                var sessionVm = new TrainingSessionViewModel(
+                    Id: s.Id,
+                    Name: s.Name,
+                    StartTime: s.StartTime,
+                    EndTime: s.EndTime,
+                    MaxParticipants: s.MaxParticipants
+                );
+
                 return new TrainingSessionListItemViewModel(
-                    Session: new TrainingSessionViewModel(
-                        Id: s.Id,
-                        Name: s.Name,
-                        StartTime: s.StartTime,
-                        EndTime: s.EndTime,
-                        MaxParticipants: s.MaxParticipants
-                    ),
+                    Session: sessionVm,
                     IsBooked: isBooked,
                     BookedCount: bookedCount,
                     IsFull: isFull
@@ -59,7 +64,6 @@ public class TrainingController : Controller
     [HttpPost("book/{id:guid}")]
     [Authorize(Roles = "Admin,User")]
     [ValidateAntiForgeryToken]
-
     public async Task<IActionResult> Book(Guid id)
     {
         // För att boka en session måste vi veta vem som bokar, så vi hämtar userId från claims.
@@ -77,7 +81,6 @@ public class TrainingController : Controller
 
      [HttpPost("cancel/{id:guid}")]
      [Authorize(Roles = "Admin,User")]
-     [ValidateAntiForgeryToken]
      public async Task<IActionResult> Cancel(Guid id)
      {
          var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
