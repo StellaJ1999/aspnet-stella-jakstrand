@@ -1,0 +1,19 @@
+﻿@{
+    ViewData["Title"] = "404";
+}
+
+<section class="error-page error-page--404">
+    <div class="container error-page__container">
+        <img class="error-page__image"
+             src="~/images/404-error-image.png"
+             asp-append-version="true"
+             alt="404 - Page not found" />
+
+        <h1 class="error-page__title">Oops! page not found</h1>
+        <p class="error-page__description">The page you are looking for does not exist.</p>
+
+        <a class="btn accent error-page__cta" asp-controller="Home" asp-action="Index">
+            Back to Homepage
+        </a>
+    </div>
+</section>

@@ -22,6 +22,7 @@ var app = builder.Build();
 
 app.UseHsts();
 app.UseHttpsRedirection();
+app.UseStatusCodePagesWithReExecute("/error/{0}");
 app.UseRouting();
 
 app.UseSession();
