@@ -9,13 +9,7 @@ public sealed class TrainingSessionBookingRepository(PersistenceContext db) : IT
 {
     public async Task<bool> AddAsync(Guid sessionId, string userId)
     {
-        var booking = new TrainingSessionBooking
-        {
-            Id = Guid.NewGuid(),
-            TrainingSessionId = sessionId,
-            UserId = userId,
-            BookedAtUtc = DateTime.UtcNow
-        };
+        var booking = TrainingSessionBooking.Create(sessionId, userId, DateTime.UtcNow);
 
         db.TrainingSessionBookings.Add(booking);
         return await db.SaveChangesAsync() > 0;

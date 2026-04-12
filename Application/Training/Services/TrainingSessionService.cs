@@ -11,6 +11,9 @@ public sealed class TrainingSessionService(ITrainingSessionRepository repo) : IT
         ArgumentNullException.ThrowIfNull(input);
         input.SetId(Guid.NewGuid());
         input.SetCreatedUtc(DateTime.UtcNow);
+
+        // Let `DomainException` bubble up so the presentation layer can show a useful message.
+        // Don't swallow unexpected exceptions either.
         return await repo.CreateTrainingSessionAsync(input);
     }
 
@@ -25,6 +28,7 @@ public sealed class TrainingSessionService(ITrainingSessionRepository repo) : IT
         ArgumentNullException.ThrowIfNull(input);
 
         input.SetId(id);
+
         return await repo.UpdateTrainingSessionAsync(input);
     }
 

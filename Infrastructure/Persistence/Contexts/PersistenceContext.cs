@@ -1,4 +1,5 @@
-﻿using Domain.Support;
+﻿using Domain.Memberships;
+using Domain.Support;
 using Domain.Training;
 using Infrastructure.Identity.Models;
 using Microsoft.AspNetCore.Identity;
@@ -17,7 +18,8 @@ public class PersistenceContext(DbContextOptions<PersistenceContext> options)
     public DbSet<ContactRequest> ContactRequests => Set<ContactRequest>();
     public DbSet<TrainingSession> TrainingSessions => Set<TrainingSession>();
     public DbSet<TrainingSessionBooking> TrainingSessionBookings => Set<TrainingSessionBooking>();
-
+    public DbSet<MembershipOffer> MembershipOffers => Set<MembershipOffer>();
+    public DbSet<MembershipSubscription> MembershipSubscriptions => Set<MembershipSubscription>();
     protected override void OnModelCreating(ModelBuilder builder)
     {
        

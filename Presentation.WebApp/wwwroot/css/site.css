@@ -1280,3 +1280,75 @@ form {
         }
     }
 }
+
+.section__membership-join {
+    .membership-join-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 2rem;
+
+        @media (width < 992px) {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .membership-join-options {
+        display: grid;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .membership-join-option {
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem 1.25rem;
+        border-radius: 20px;
+        background-color: var(--white-color);
+        border: 1px solid rgba(39, 37, 47, 0.12);
+        cursor: pointer;
+
+        input {
+            height: 16px;
+            width: 16px;
+        }
+    }
+
+    .membership-join-option__title {
+        font-weight: 800;
+        font-family: var(--font-heading);
+    }
+
+    .membership-join-option__price {
+        opacity: 0.9;
+        font-weight: 600;
+    }
+
+    .membership-join-summary {
+        padding: 1.5rem;
+        border-radius: 20px;
+        background-color: var(--white-color);
+        border: 1px solid rgba(39, 37, 47, 0.12);
+
+        hr {
+            opacity: 0.1;
+        }
+    }
+}
+
+/* training sessions (empty state) */
+.training-session-empty {
+    min-height: 55vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.training-session-empty__text {
+    margin: 0;
+    font-size: clamp(1.5rem, 1.1rem + 1.2vw, 2.25rem);
+    font-weight: 700;
+    opacity: 0.9;
+}

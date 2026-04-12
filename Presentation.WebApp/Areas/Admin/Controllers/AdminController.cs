@@ -2,6 +2,7 @@
 using Application.Training.Inputs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Domain.Common;
 using Presentation.WebApp.Areas.Admin.Models;
 
 namespace Presentation.WebApp.Areas.Admin.Controllers;
@@ -31,7 +32,18 @@ public class AdminController : Controller
     {
         ViewData["Title"] = "Schedule";
         var sessions = await _sessions.GetAllTrainingSessionsAsync();
-        return View(sessions);
+
+        var model = sessions
+            .Select(s => new TrainingSessionScheduleItemViewModel(
+                Id: s.Id,
+                Name: s.Name,
+                StartTime: s.StartTime,
+                EndTime: s.EndTime,
+                MaxParticipants: s.MaxParticipants
+            ))
+            .ToList();
+
+        return View(model);
     }
 
     [HttpGet("schedule/create")]
@@ -57,10 +69,18 @@ public class AdminController : Controller
             form.MaxParticipants
         );
 
-        var ok = await _sessions.CreateTrainingSessionAsync(input);
-        TempData["Message"] = ok ? "Session created." : "Could not create session.";
-
-        return RedirectToAction(nameof(Schedule));
+        try
+        {
+            var ok = await _sessions.CreateTrainingSessionAsync(input);
+            TempData["Message"] = ok ? "Session created." : "Could not create session.";
+            return RedirectToAction(nameof(Schedule));
+        }
+        catch (DomainException ex)
+        {
+            // Surface domain invariant violations back into the form.
+            ModelState.AddModelError(string.Empty, ex.Message);
+            return View("TrainingSessionForm", form);
+        }
     }
 
     [HttpGet("schedule/{id:guid}/edit")]
@@ -99,10 +119,17 @@ public class AdminController : Controller
             form.MaxParticipants
         );
 
-        var ok = await _sessions.UpdateTrainingSessionAsync(id, input);
-        TempData["Message"] = ok ? "Session updated." : "Could not update session.";
-
-        return RedirectToAction(nameof(Schedule));
+        try
+        {
+            var ok = await _sessions.UpdateTrainingSessionAsync(id, input);
+            TempData["Message"] = ok ? "Session updated." : "Could not update session.";
+            return RedirectToAction(nameof(Schedule));
+        }
+        catch (DomainException ex)
+        {
+            ModelState.AddModelError(string.Empty, ex.Message);
+            return View("EditTrainingSessionForm", form);
+        }
     }
 
     [HttpPost("schedule/{id:guid}/delete")]

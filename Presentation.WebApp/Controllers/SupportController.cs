@@ -2,6 +2,7 @@
 using Application.Support.Inputs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Domain.Common;
 using Presentation.Models.CustomerService;
 
 namespace Presentation.WebApp.Controllers;
@@ -45,11 +46,19 @@ public class SupportController : Controller
 
         // Anropar Application-lagret via service interfacet.
         // Controllern har ingen kunskap om hur det är implementerat, bara att det finns en metod som tar ett input-objekt och returnerar en bool.
-        var ok = await _contactRequestService.CreateContactRequestAsync(input);
+        try
+        {
+            var ok = await _contactRequestService.CreateContactRequestAsync(input);
 
-        // Detta är den text visas under knappen efter att POST:en är klar.
-        TempData["Message"] = ok ? "Contact request sent." : "Contact request failed to send.";
-
-        return RedirectToAction(nameof(Index));
+            // Detta är den text visas under knappen efter att POST:en är klar.
+            TempData["Message"] = ok ? "Contact request sent." : "Contact request failed to send.";
+            return RedirectToAction(nameof(Index));
+        }
+        catch (DomainException ex)
+        {
+            // Show domain validation error under the submit button (uses TempData pattern in the partial).
+            TempData["Message"] = ex.Message;
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

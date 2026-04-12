@@ -20,16 +20,15 @@ public sealed class ContactRequestRepository(PersistenceContext db) : IContactRe
         var id = Guid.TryParse(model.Id, out var guid) ? guid : Guid.NewGuid();
         var createdUtc = model.CreatedAt == default ? DateTime.UtcNow : model.CreatedAt;
 
-        var entity = new ContactRequest
-        {
-            Id = id,
-            FirstName = model.FirstName,
-            LastName = model.LastName,
-            Email = model.Email,
-            Phone = model.Phone,
-            Message = model.Message,
-            CreatedUtc = createdUtc
-        };
+        var entity = ContactRequest.Create(
+            id: id,
+            firstName: model.FirstName,
+            lastName: model.LastName,
+            email: model.Email,
+            phone: model.Phone,
+            message: model.Message,
+            createdUtc: createdUtc
+        );
 
         // Add lägger entiteten i EF Cores change tracker så att en INSERT genereras när vi sparar.
         db.ContactRequests.Add(entity);

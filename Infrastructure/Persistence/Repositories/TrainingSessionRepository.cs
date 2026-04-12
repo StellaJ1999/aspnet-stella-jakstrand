@@ -12,17 +12,14 @@ internal class TrainingSessionRepository(PersistenceContext db) : ITrainingSessi
     {
         ArgumentNullException.ThrowIfNull(model);
 
-        var entity = new TrainingSession
-        {
-            Id = model.Id == default ? Guid.NewGuid() : model.Id,
-            Name = model.Name,
-            StartTime = model.StartTime,
-            EndTime = model.EndTime,
-            Date = model.StartTime.Date,
-            MaxParticipants = model.MaxParticipants,
-            CreatedUtc = model.CreatedUtc == default ? DateTime.UtcNow : model.CreatedUtc
-
-        };
+        var entity = TrainingSession.Create(
+            id: model.Id,
+            name: model.Name,
+            startTime: model.StartTime,
+            endTime: model.EndTime,
+            maxParticipants: model.MaxParticipants,
+            createdUtc: model.CreatedUtc
+        );
 
         db.TrainingSessions.Add(entity);
         return await db.SaveChangesAsync() > 0;
@@ -62,11 +59,12 @@ internal class TrainingSessionRepository(PersistenceContext db) : ITrainingSessi
         if (entity is null)
             return false;
 
-        entity.Name = model.Name;
-        entity.StartTime = model.StartTime;
-        entity.EndTime = model.EndTime;
-        entity.Date = model.StartTime.Date;
-        entity.MaxParticipants = model.MaxParticipants;
+        entity.Update(
+            name: model.Name,
+            startTime: model.StartTime,
+            endTime: model.EndTime,
+            maxParticipants: model.MaxParticipants
+        );
 
         return await db.SaveChangesAsync() > 0;
     }

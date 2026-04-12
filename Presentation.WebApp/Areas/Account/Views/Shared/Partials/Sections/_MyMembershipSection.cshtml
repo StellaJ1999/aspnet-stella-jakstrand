@@ -1,0 +1,32 @@
+﻿@model Presentation.WebApp.Models.MyMembershipViewModel
+
+<section class="form-card">
+    <div class="title">
+        <h3>My Membership</h3>
+        <hr />
+    </div>
+
+    @if (!Model.HasActiveMembership)
+    {
+        <p>You have no active membership.</p>
+        <a class="btn accent" asp-controller="Memberships" asp-action="Join">Create membership</a>
+    }
+    else
+    {
+        <p><strong>Membership:</strong> @Model.Active!.Tier</p>
+        <p><strong>Status:</strong> @Model.Active!.Status</p>
+        <p><strong>Monthly price:</strong> @Model.Active!.MonthlyPrice.ToString("0.00")</p>
+        <p><strong>Duration:</strong> @Model.Active!.DurationInMonths month(s)</p>
+        <p><strong>Start:</strong> @Model.Active!.StartUtc.ToString("yyyy-MM-dd")</p>
+        <p><strong>End:</strong> @Model.Active!.EndUtc.ToString("yyyy-MM-dd")</p>
+
+        <hr />
+
+        <form method="post" asp-area="Account" asp-controller="AccountMembership" asp-action="Cancel">
+            @Html.AntiForgeryToken()
+            <div class="form-actions">
+                <button class="btn" type="submit">Cancel membership</button>
+            </div>
+        </form>
+    }
+</section>

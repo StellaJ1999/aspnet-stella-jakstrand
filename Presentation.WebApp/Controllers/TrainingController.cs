@@ -39,7 +39,13 @@ public class TrainingController : Controller
                 var isBooked = bookedIds.Contains(s.Id);
 
                 return new TrainingSessionListItemViewModel(
-                    Session: s,
+                    Session: new TrainingSessionViewModel(
+                        Id: s.Id,
+                        Name: s.Name,
+                        StartTime: s.StartTime,
+                        EndTime: s.EndTime,
+                        MaxParticipants: s.MaxParticipants
+                    ),
                     IsBooked: isBooked,
                     BookedCount: bookedCount,
                     IsFull: isFull

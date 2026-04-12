@@ -1,5 +1,6 @@
 ﻿using Infrastructure.Identity.Data;
 using Infrastructure.Persistence.Contexts;
+using Infrastructure.Persistence.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -36,6 +37,12 @@ public class InfrastructureInitializer
             }
             catch { }
         }
+
+        try
+        {
+            await MembershipSeeder.SeedAsync(db);
+        }
+        catch { }
 
         // Seeda bara i utvecklingsmiljö, eller om det är uttryckligen aktiverat i konfigurationen
 

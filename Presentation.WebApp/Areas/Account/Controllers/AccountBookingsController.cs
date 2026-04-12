@@ -33,7 +33,13 @@ public class AccountBookingsController(
                 var isFull = bookedCount >= s.MaxParticipants;
 
                 return new TrainingSessionListItemViewModel(
-                    Session: s,
+                    Session: new TrainingSessionViewModel(
+                        Id: s.Id,
+                        Name: s.Name,
+                        StartTime: s.StartTime,
+                        EndTime: s.EndTime,
+                        MaxParticipants: s.MaxParticipants
+                    ),
                     IsBooked: true,
                     BookedCount: bookedCount,
                     IsFull: isFull

@@ -1,0 +1,59 @@
+﻿@using Domain.Memberships
+@model Presentation.WebApp.Models.MembershipJoinViewModel
+
+<section class="section__membership-join form-card">
+    <div class="title">
+        <h3>Choose membership</h3>
+        <hr />
+    </div>
+
+    <form method="post" asp-controller="Memberships" asp-action="Join" novalidate>
+        <div class="membership-join-grid">
+            <div>
+                <div class="membership-join-options">
+                    <label class="membership-join-option">
+                        <input type="radio" name="Tier" value="@MembershipTier.Standard" checked="@(Model.Tier == MembershipTier.Standard)" />
+                        <span class="membership-join-option__title">Standard</span>
+                        <span class="membership-join-option__price">@Model.Offers.First(x => x.Tier == MembershipTier.Standard).MonthlyPrice.ToString("0.00") / month</span>
+                    </label>
+
+                    <label class="membership-join-option">
+                        <input type="radio" name="Tier" value="@MembershipTier.Premium" checked="@(Model.Tier == MembershipTier.Premium)" />
+                        <span class="membership-join-option__title">Premium</span>
+                        <span class="membership-join-option__price">@Model.Offers.First(x => x.Tier == MembershipTier.Premium).MonthlyPrice.ToString("0.00") / month</span>
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="DurationInMonths">Duration</label>
+                    <select class="form-input" id="DurationInMonths" name="DurationInMonths">
+                        @for (var i = 1; i <= 12; i++)
+                        {
+                            <option value="@i" selected="@(i == Model.DurationInMonths)">@i month(s)</option>
+                        }
+                    </select>
+                </div>
+
+                @if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+                {
+                    <div class="form-errormessage">@Model.ErrorMessage</div>
+                }
+
+                @Html.AntiForgeryToken()
+
+                <div class="form-actions">
+                    <button class="btn accent" type="submit">Confirm membership</button>
+                </div>
+            </div>
+
+            <aside class="membership-join-summary">
+                <h4>Summary</h4>
+                <hr />
+                <p><strong>Tier:</strong> @Model.Tier</p>
+                <p><strong>Monthly:</strong> @Model.MonthlyPrice.ToString("0.00")</p>
+                <p><strong>Duration:</strong> @Model.DurationInMonths month(s)</p>
+                <p><strong>Total:</strong> @Model.TotalPrice.ToString("0.00")</p>
+            </aside>
+        </div>
+    </form>
+</section>

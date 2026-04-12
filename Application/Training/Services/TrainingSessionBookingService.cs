@@ -1,7 +1,5 @@
 ﻿using Application.Abstractions.Training;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Domain.Common;
 
 namespace Application.Training.Services
 {
@@ -10,7 +8,7 @@ namespace Application.Training.Services
         public async Task<bool> BookAsync(Guid sessionId, string userId)
         {
             if(string.IsNullOrWhiteSpace(userId))
-                throw new ArgumentException("User ID is required.", nameof(userId));
+                throw new DomainException("User ID is required.");
 
             // Kolla om sessionen finns
             var session = await sessionsRepo.GetByIdAsync(sessionId);
@@ -32,7 +30,7 @@ namespace Application.Training.Services
         public Task<bool> CancelBookingAsync(Guid sessionId, string userId)
         {
             if (string.IsNullOrWhiteSpace(userId))
-                throw new ArgumentException("User ID is required.", nameof(userId));
+                throw new DomainException("User ID is required.");
 
                 return bookingsRepo.RemoveAsync(sessionId, userId);
         }
@@ -40,7 +38,7 @@ namespace Application.Training.Services
         public Task<IReadOnlySet<Guid>> GetBookingsForUserAsync(string userId)
         {
             if (string.IsNullOrWhiteSpace(userId))
-                throw new ArgumentException("UserId is required.", nameof(userId));
+                throw new DomainException("UserId is required.");
 
             return bookingsRepo.GetBookedSessionIdsAsync(userId);
         }

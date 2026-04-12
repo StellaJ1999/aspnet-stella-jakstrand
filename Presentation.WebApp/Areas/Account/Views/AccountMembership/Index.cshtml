@@ -1,0 +1,33 @@
+﻿@model Presentation.WebApp.Models.MyMembershipViewModel
+
+@{
+    ViewData["Title"] = "My Membership";
+}
+
+<aside>
+    <div class="profile-image">
+        <img src="~/images/profile-image-avatar.png" alt="user profile image" />
+    </div>
+
+    <nav class="account-options-menu options-menu">
+        <div class="options-menu-title">Menu</div>
+        <ul class="options">
+            <li class="option-item">
+                <a class="option-item-link" asp-area="Account" asp-controller="Account" asp-action="AboutMe">About Me</a>
+            </li>
+            <li class="option-item">
+                <a class="option-item-link" asp-area="Account" asp-controller="AccountMembership" asp-action="Index">My Membership</a>
+            </li>
+            <li class="option-item">
+                <a class="option-item-link" asp-area="Account" asp-controller="AccountBookings" asp-action="Index">My Bookings</a>
+            </li>
+            <li class="option-item">
+                <a class="option-item-link" asp-area="Account" asp-controller="Account" asp-action="SignOut">Sign Out</a>
+            </li>
+        </ul>
+    </nav>
+</aside>
+
+<main>
+    <partial name="Partials/Sections/_MyMembershipSection" model="Model" />
+</main>

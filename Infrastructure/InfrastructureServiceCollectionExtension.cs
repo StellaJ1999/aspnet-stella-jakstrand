@@ -1,4 +1,5 @@
-﻿using Application.Abstractions.Support;
+﻿using Application.Abstractions.Memberships;
+using Application.Abstractions.Support;
 using Application.Abstractions.Training;
 using Infrastructure.Identity.Extensions;
 using Infrastructure.Persistence.Extensions;
@@ -29,6 +30,8 @@ public static class InfrastructureServiceCollectionExtension
 
         services.AddScoped<ITrainingSessionRepository, TrainingSessionRepository>();
         services.AddScoped<ITrainingSessionBookingRepository, TrainingSessionBookingRepository>();
+        services.AddScoped<IMembershipOfferRepository, MembershipOfferRepository>();
+        services.AddScoped<IMembershipSubscriptionRepository, MembershipSubscriptionRepository>();
 
         return services;
     }

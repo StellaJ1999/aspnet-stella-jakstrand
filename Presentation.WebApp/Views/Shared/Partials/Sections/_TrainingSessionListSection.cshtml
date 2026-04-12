@@ -4,7 +4,9 @@
 <div class="container">
     @if (Model is null || Model.Count == 0)
     {
-        <p>No sessions available.</p>
+        <div class="training-session-empty">
+            <p class="training-session-empty__text">No sessions yet.</p>
+        </div>
     }
     else
     {
