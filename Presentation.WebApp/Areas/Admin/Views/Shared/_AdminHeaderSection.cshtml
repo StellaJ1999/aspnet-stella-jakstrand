@@ -11,6 +11,59 @@
         </ul>
     </nav>
 
-    <button id="mobile-menu-button" data-target="#mobile-menu-flyout" class="mobile-btn accent"></button>
+    <button
+        id="mobile-menu-button"
+        type="button"
+        data-target="#mobile-menu-flyout"
+        class="mobile-btn accent"
+        aria-controls="mobile-menu-flyout"
+        aria-expanded="false"
+        aria-label="Open menu"></button>
+
+    <div id="mobile-menu-backdrop" class="mobile-menu-backdrop" hidden></div>
+
+    <div id="mobile-menu-flyout" class="mobile-menu-flyout" hidden>
+        <nav class="mobile-menu-nav" aria-label="Mobile menu">
+            <div class="mobile-menu-section-title">Overview</div>
+            <ul class="menu">
+                <li class="menu-item">
+                    <a class="menu-item-link" asp-area="Admin" asp-controller="Admin" asp-action="Dashboard">Dashboard</a>
+                </li>
+                <li class="menu-item">
+                    <a class="menu-item-link" asp-area="Admin" asp-controller="Admin" asp-action="Messages">Messages</a>
+                </li>
+                <li class="menu-item">
+                    <a class="menu-item-link" asp-area="Admin" asp-controller="Admin" asp-action="Schedule">Schedule</a>
+                </li>
+            </ul>
+
+            <hr />
+
+            <div class="mobile-menu-section-title">Management</div>
+            <ul class="menu">
+                <li class="menu-item">
+                    <a class="menu-item-link" asp-area="Admin" asp-controller="AdminEmployees" asp-action="Index">Employees</a>
+                </li>
+                <li class="menu-item">
+                    <a class="menu-item-link" asp-area="Admin" asp-controller="AdminMembers" asp-action="Index">Members</a>
+                </li>
+                <li class="menu-item">
+                    <a class="menu-item-link" asp-area="Admin" asp-controller="AdminMemberships" asp-action="Index">Memberships</a>
+                </li>
+                <li class="menu-item">
+                    <a class="menu-item-link" asp-area="Admin" asp-controller="AdminInvoices" asp-action="Index">Invoices</a>
+                </li>
+            </ul>
+
+            <hr />
+
+            <div class="mobile-menu-section-title">Account</div>
+            <ul class="menu">
+                <li class="menu-item">
+                    <a class="btn accent" asp-area="Account" asp-controller="Account" asp-action="Index">My Account</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
 
 </section>

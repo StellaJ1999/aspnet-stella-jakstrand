@@ -28,11 +28,6 @@
 /*
     Realtidsvalidering för alla formulär som använder MVC TagHelpers + DataAnnotations.
 
-    AspNetCore renderar `data-val="true"` och `data-val-*` på inputs när man använder `asp-for`
-    och renderar en matchande `span` med `data-valmsg-for="Fältnamn"` när du använder `asp-validation-for`.
-    Jag använder de attributen som “kontrakt” och visar feltext direkt i respektive span medan användaren skriver.
-
-    Detta påverkar inte server-side valideringen, den körs fortfarande vid POST.
 */
 
 (() => {
@@ -155,7 +150,7 @@
     };
 
     const initFormValidation = (form) => {
-        // Vi initierar bara formulär som faktiskt har MVC validation-attribut.
+        // Initierar bara formulär som faktiskt har MVC validation-attribut.
         const fields = Array.from(form.querySelectorAll('input[data-val="true"][name], textarea[data-val="true"][name], select[data-val="true"][name]'));
         if (fields.length === 0) return;
 
@@ -191,4 +186,107 @@
     };
 
     document.querySelectorAll('form').forEach(initFormValidation);
+})();
+
+
+(() => {
+    const TRANSITION_MS = 200;
+
+    const buttons = document.querySelectorAll('#mobile-menu-button[data-target]');
+    if (buttons.length === 0) return;
+
+    const setOpen = (button, flyout, backdrop, isOpen) => {
+        button.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+
+        if (isOpen) {
+            flyout.hidden = false;
+            backdrop.hidden = false;
+
+            requestAnimationFrame(() => flyout.classList.add('is-open'));
+        } else {
+            flyout.classList.remove('is-open');
+
+            window.setTimeout(() => {
+                flyout.hidden = true;
+                backdrop.hidden = true;
+            }, TRANSITION_MS);
+        }
+    };
+
+    buttons.forEach(button => {
+        const header = button.closest('.section__header') ?? document;
+        const targetSelector = button.getAttribute('data-target');
+        if (!targetSelector) return;
+
+        const flyout = header.querySelector(targetSelector) ?? document.querySelector(targetSelector);
+        const backdrop = header.querySelector('#mobile-menu-backdrop') ?? document.querySelector('#mobile-menu-backdrop');
+        if (!flyout || !backdrop) return;
+
+        const updateFlyoutPosition = () => {
+            const rect = header.getBoundingClientRect();
+            const top = Math.max(8, rect.bottom + 12); 
+            flyout.style.top = `${top}px`;
+        };
+
+        let rafPending = false;
+        const schedulePositionUpdate = () => {
+            if (rafPending) return;
+            rafPending = true;
+            requestAnimationFrame(() => {
+                rafPending = false;
+                updateFlyoutPosition();
+            });
+        };
+
+        const onViewportChange = () => {
+            const isOpen = button.getAttribute('aria-expanded') === 'true';
+            if (isOpen) schedulePositionUpdate();
+        };
+
+        button.setAttribute('aria-expanded', 'false');
+        flyout.hidden = true;
+        backdrop.hidden = true;
+        flyout.classList.remove('is-open');
+
+        button.addEventListener('click', () => {
+            const isOpen = button.getAttribute('aria-expanded') === 'true';
+
+            if (!isOpen) {
+                updateFlyoutPosition();
+                window.addEventListener('resize', onViewportChange);
+                window.addEventListener('scroll', onViewportChange, { passive: true });
+            } else {
+                window.removeEventListener('resize', onViewportChange);
+                window.removeEventListener('scroll', onViewportChange);
+            }
+
+            setOpen(button, flyout, backdrop, !isOpen);
+        });
+
+        backdrop.addEventListener('click', () => {
+            window.removeEventListener('resize', onViewportChange);
+            window.removeEventListener('scroll', onViewportChange);
+            setOpen(button, flyout, backdrop, false);
+        });
+
+        flyout.addEventListener('click', (e) => {
+            const link = e.target?.closest?.('a');
+            if (!link) return;
+
+            window.removeEventListener('resize', onViewportChange);
+            window.removeEventListener('scroll', onViewportChange);
+            setOpen(button, flyout, backdrop, false);
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key !== 'Escape') return;
+
+            const isOpen = button.getAttribute('aria-expanded') === 'true';
+            if (!isOpen) return;
+
+            window.removeEventListener('resize', onViewportChange);
+            window.removeEventListener('scroll', onViewportChange);
+            setOpen(button, flyout, backdrop, false);
+        });
+    });
 })();
