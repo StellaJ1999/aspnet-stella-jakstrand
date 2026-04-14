@@ -1,7 +1,10 @@
 ﻿using Application.Abstractions.Identity;
 using Infrastructure.Identity.Models;
+using Infrastructure.Identity.Options;
 using Infrastructure.Identity.Services;
 using Infrastructure.Persistence.Contexts;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -41,6 +44,26 @@ public static class IdentityServiceCollectionExtension
     
             x.ExpireTimeSpan = TimeSpan.FromDays(ExpiresInDays);
         });
+
+        var authenticationBuilder = services.AddAuthentication();
+
+        var googleOptions = configuration
+            .GetSection(GoogleAuthenticationOptions.SectionName)
+            .Get<GoogleAuthenticationOptions>();
+
+        if (googleOptions is not null && !string.IsNullOrWhiteSpace(googleOptions.ClientId) && !string.IsNullOrWhiteSpace(googleOptions.ClientSecret))
+        {
+            authenticationBuilder.AddGoogle(GoogleDefaults.AuthenticationScheme, options =>
+            {
+                options.ClientId = googleOptions.ClientId;
+                options.ClientSecret = googleOptions.ClientSecret;
+                options.SignInScheme = IdentityConstants.ExternalScheme;
+                options.CallbackPath = "/signin-google";
+
+                options.ClaimActions.MapJsonKey("urn:google:picture", "picture", "url");
+                options.SaveTokens = true;
+            });
+        }
 
         services.AddScoped<IAuthService, IdentityAuthService>();
         services.AddScoped<IUserService, IdentityUserService>();

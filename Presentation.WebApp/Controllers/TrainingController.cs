@@ -22,7 +22,7 @@ public class TrainingController : Controller
     }
 
     [HttpGet("")]
-    [Authorize(Roles = "Admin,User")]
+    [Authorize]
     public async Task<IActionResult> Index()
     {
         ViewData["Title"] = "Training";
@@ -62,7 +62,7 @@ public class TrainingController : Controller
     }
 
     [HttpPost("book/{id:guid}")]
-    [Authorize(Roles = "Admin,User")]
+    [Authorize]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Book(Guid id)
     {
@@ -80,7 +80,7 @@ public class TrainingController : Controller
     }
 
      [HttpPost("cancel/{id:guid}")]
-     [Authorize(Roles = "Admin,User")]
+     [Authorize]
      public async Task<IActionResult> Cancel(Guid id)
      {
          var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);

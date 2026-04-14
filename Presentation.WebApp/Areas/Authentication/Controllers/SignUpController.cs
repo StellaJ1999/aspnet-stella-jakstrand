@@ -12,12 +12,13 @@ public class SignUpController(IAuthService authService) : Controller
     private const string RegEmailSessionKey = "reg_email";
 
     [HttpGet("sign-up")]
-    public IActionResult SignUp()
+    public IActionResult SignUp(string? returnUrl = null)
     {
         var redirectPath = AuthenticationRedirectService.GetRedirectPathWhenSignedIn(User);
         if (redirectPath is not null)
             return Redirect(redirectPath);
-
+       
+        ViewBag.ReturnUrl = returnUrl;
         return View();
     }
 

@@ -1755,3 +1755,27 @@ form {
             background-color: #303030;
             opacity: 8%;
         }
+
+.divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: #666;
+    font-size: 14px;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+
+    &::before,
+    &::after {
+        content: '';
+        flex: 1;
+        border-bottom: 1px solid var(--border-color);
+        opacity: 0.2;
+    }
+
+    span {
+        padding: 0 12px;
+        background: #fff;
+    }
+}
+
