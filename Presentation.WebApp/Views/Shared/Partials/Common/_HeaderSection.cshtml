@@ -29,7 +29,7 @@
                 @if (User.IsInRole("Admin"))
                 {
                     <li class="menu-item">
-                        <a class="menu-item-link" asp-area="Admin" asp-controller="Admin" asp-action="Index">Admin Center</a>
+                        <a class="menu-item-link" asp-area="Admin" asp-controller="Admin" asp-action="Dashboard">Admin Center</a>
                     </li>
                 }
 
@@ -88,7 +88,7 @@
                     @if (User.IsInRole("Admin"))
                     {
                         <li class="menu-item">
-                            <a class="menu-item-link" asp-area="Admin" asp-controller="Admin" asp-action="Index">Admin Center</a>
+                            <a class="menu-item-link" asp-area="Admin" asp-controller="Admin" asp-action="Dashboard">Admin Center</a>
                         </li>
                     }
 

@@ -1,0 +1,42 @@
+﻿@model Presentation.WebApp.Areas.Admin.Models.AdminMembersListViewModel
+
+@{
+    ViewData["Title"] = "Members";
+}
+
+<section class="form-card">
+    <div class="title">
+        <h3>Members</h3>
+        <hr />
+    </div>
+
+    <div class="admin-members-list">
+        @foreach (var member in Model.Members)
+        {
+            <article class="admin-members-card">
+                <div class="admin-members-card__details">
+                    <div class="admin-members-card__field">
+                        <span class="admin-members-card__label">Email</span>
+                        <span class="admin-members-card__value">@member.Email</span>
+                    </div>
+                </div>
+
+                <div class="admin-members-card__actions">
+                    <form asp-action="UpdateRole" method="post" class="admin-members__role-form">
+                        <input type="hidden" name="id" value="@member.Id" />
+                        <label class="admin-members__role-label">
+                            <input type="checkbox" name="isAdmin" value="true" @(member.IsAdmin ? "checked" : "") />
+                            Admin
+                        </label>
+                        <button type="submit" class="btn accent admin-members__button">Save</button>
+                    </form>
+
+                    <form asp-action="Delete" method="post" class="admin-members__delete-form">
+                        <input type="hidden" name="id" value="@member.Id" />
+                        <button type="submit" class="btn accent admin-members__button admin-members__button--danger">Delete</button>
+                    </form>
+                </div>
+            </article>
+        }
+    </div>
+</section>
