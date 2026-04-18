@@ -12,9 +12,13 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
     <PackageReference Include="xunit" Version="2.9.3" />
     <PackageReference Include="xunit.runner.visualstudio" Version="3.1.4" />
+    <PackageReference Include="Moq" Version="4.20.70" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="10.0.5" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Application\Application.csproj" />
+    <ProjectReference Include="..\Domain\Domain.csproj" />
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
     <ProjectReference Include="..\Presentation.WebApp\Presentation.WebApp.csproj" />
   </ItemGroup>
@@ -25,8 +29,6 @@
 
   <ItemGroup>
     <Folder Include="E2E\" />
-    <Folder Include="Integration\" />
-    <Folder Include="Unit\" />
   </ItemGroup>
 
 </Project>

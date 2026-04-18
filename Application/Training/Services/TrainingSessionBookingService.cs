@@ -3,7 +3,7 @@ using Domain.Common;
 
 namespace Application.Training.Services
 {
-    internal class TrainingSessionBookingService(ITrainingSessionRepository sessionsRepo, ITrainingSessionBookingRepository bookingsRepo) : ITrainingSessionBookingService
+    public class TrainingSessionBookingService(ITrainingSessionRepository sessionsRepo, ITrainingSessionBookingRepository bookingsRepo) : ITrainingSessionBookingService
     {
         public async Task<bool> BookAsync(Guid sessionId, string userId)
         {
