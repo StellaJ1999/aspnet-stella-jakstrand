@@ -27,7 +27,6 @@ public class IdentityUserService(UserManager<AppUser> userManager) : IUserServic
 
         return UserResult.Ok(user.Id, userDetails);
     }
-
     public async Task<UserResult> UpdateUserDetailsAsync(UserDetails userDetails)
     {
         ArgumentNullException.ThrowIfNull(userDetails);
@@ -45,5 +44,20 @@ public class IdentityUserService(UserManager<AppUser> userManager) : IUserServic
         return result.Succeeded
             ? UserResult.Ok()
             : UserResult.Failed(result.Errors.FirstOrDefault()?.Description ?? "Unable to save changes");
+    }
+    public async Task<UserResult> DeleteUserAsync(string userId)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(userId);
+
+        var user = await userManager.FindByIdAsync(userId);
+        if (user == null)
+            return UserResult.NotFound();
+
+        var result = await userManager.DeleteAsync(user);
+
+        return result.Succeeded
+            ? UserResult.Ok()
+            : UserResult.Failed(result.Errors.FirstOrDefault()?.Description ?? "Unable to delete user");
+
     }
 }

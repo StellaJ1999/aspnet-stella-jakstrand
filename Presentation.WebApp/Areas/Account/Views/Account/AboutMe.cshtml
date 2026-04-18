@@ -4,6 +4,7 @@
     ViewData["Title"] = "My Account";
 }
 
+
 <aside>
     <div class="profile-image">
         @if (!string.IsNullOrWhiteSpace(Model.ProfileImageUrl))
@@ -15,6 +16,7 @@
             <img src="~/images/profile-image-avatar.png" alt="user profile image" />
         }
     </div>
+
 
     <nav class="account-options-menu options-menu">
         <div class="options-menu-title">
@@ -35,6 +37,12 @@
             </li>
         </ul>
     </nav>
+
+
+    <div class="account-remove">
+        <p class="account-remove__text">If you like to cancel your account click below</p>
+        <button type="button" class="account-remove__button" data-dialog-target="remove-account-dialog">Remove Account</button>
+    </div>
 
 </aside>
 <main>
@@ -78,4 +86,17 @@
             @Html.AntiForgeryToken()
         </form>
     </section>
+    <partial name="Partials/Sections/_MyStatistics" />
 </main>
+
+<dialog id="remove-account-dialog" class="modal">
+    <form method="post" asp-area="Account" asp-controller="Account" asp-action="RemoveAccount">
+        <h4 class="modal__title">Remove account?</h4>
+        <p class="modal__text">This will permanently delete your account.</p>
+        <div class="modal__actions">
+            <button type="button" class="btn" data-dialog-close>No</button>
+            <button type="submit" class="btn danger">Yes</button>
+        </div>
+        @Html.AntiForgeryToken()
+    </form>
+</dialog>

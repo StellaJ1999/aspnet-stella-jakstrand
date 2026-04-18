@@ -653,7 +653,7 @@ form {
 .training-session-list {
     display: grid;
     gap: 1rem;
-    margin-top: 1.5rem;
+    margin: 2rem 0 3rem;
 }
 
 .training-session-card {
@@ -743,6 +743,11 @@ form {
 
 /* footer */
 .section__footer {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto 1rem;
+    padding: 2.5rem 5rem 1.5rem;
+
     background-color: var(--footer-background-color);
     background-image: url(../images/dark-section-img.png);
     background-repeat: no-repeat;
@@ -750,8 +755,23 @@ form {
     background-position: center;
     color: var(--footer-text-color);
     border-radius: 20px;
-    padding: 2.5rem 0 1.5rem;
-    margin-bottom: 1rem;
+
+    @media (width >= 768px) {
+        max-width: 720px;
+    }
+
+    @media (width >= 1200px) {
+        max-width: 1140px;
+    }
+
+    @media (width >= 1400px) {
+        max-width: 1320px;
+    }
+}
+
+.section__footer .container {
+    max-width: 100%;
+    padding-inline: 0;
 }
 
     .section__footer h2,
@@ -1441,6 +1461,22 @@ form {
 }
 
 .section__membership-join {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto 2rem;
+
+    @media (width >= 768px) {
+        max-width: 720px;
+    }
+
+    @media (width >= 1200px) {
+        max-width: 1140px;
+    }
+
+    @media (width >= 1400px) {
+        max-width: 1320px;
+    }
+
     .membership-join-grid {
         display: grid;
         grid-template-columns: 2fr 1fr;
@@ -1503,6 +1539,7 @@ form {
     align-items: center;
     justify-content: center;
     text-align: center;
+    margin: 2rem 0 3rem;
 }
 
 .training-session-empty__text {
@@ -1777,5 +1814,61 @@ form {
         padding: 0 12px;
         background: #fff;
     }
+}
+
+
+/*remove account modal*/
+
+.account-remove {
+    margin-top: 1.5rem;
+    text-align: center;
+    display: grid;
+    gap: 0.4rem;
+}
+
+.account-remove__text {
+    margin: 0;
+    font-size: 0.8rem;
+    color: var(--dark-gray-color);
+}
+
+.account-remove__button {
+    background: none;
+    border: 0;
+    padding: 0;
+    color: #d93025;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+    .account-remove__button:hover {
+        color: #b3261e;
+        text-decoration: underline;
+    }
+
+.modal {
+    border: none;
+    border-radius: 16px;
+    padding: 1.5rem;
+    max-width: 420px;
+    width: calc(100% - 2rem);
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.28);
+}
+
+    .modal::backdrop {
+        background: rgba(15, 15, 20, 0.55);
+    }
+
+.modal__title {
+    margin-top: 0;
+}
+
+.modal__actions {
+    margin-top: 1rem;
+    display: flex;
+    gap: 0.75rem;
+    justify-content: flex-end;
 }
 

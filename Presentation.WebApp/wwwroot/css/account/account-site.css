@@ -9,7 +9,7 @@
         margin-top: 0;
     }
 
-    .container {
+    .account-container {
         display: grid;
         grid-template-columns: 1fr 3fr;
         grid-template-areas: "aside main";
@@ -18,26 +18,26 @@
         aside {
             grid-area: aside;
             display: grid;
-            align-items:start;
-            gap: 1rem;
+            align-items: start;
+            align-content: start;
+            gap: 0.6rem;
         }
 
         main {
             grid-area: main;
+            padding-bottom: 2.5rem;
+        }
 
-            h2 {
-                font-size:1em;
-            }
+        main > section.form-card {
+            margin-top: 1.5rem;
         }
     }
-
 }
-
 
 /* about me */
 .about-me {
     background-color: var(--section-background-color);
-    padding: 1rem 4rem 2rem;
+    padding: 1.5rem 4rem 0.4rem;
     margin-bottom: 2rem;
     border-radius: 20px;
 
@@ -47,3 +47,101 @@
     }
 }
 
+
+.profile-image {
+    margin-bottom: 2rem;
+}
+
+.account-remove {
+    margin-top: 0.4rem;
+    text-align: center;
+    display: grid;
+    gap: 0.35rem;
+}
+
+.account-remove__text {
+    margin: 0;
+    font-size: 0.8rem;
+    color: var(--dark-gray-color);
+}
+
+.account-remove__button {
+    background: none;
+    border: 0;
+    padding: 0;
+    color: #d93025;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.account-remove__button:hover {
+    color: #b3261e;
+    text-decoration: underline;
+}
+
+/* about me */
+.about-me {
+    background-color: var(--section-background-color);
+    padding: 1.5rem 4rem 0.4rem;
+    margin-bottom: 2rem;
+    border-radius: 20px;
+
+    [data-type="submit"] {
+        display: flex;
+        justify-content: flex-end;
+    }
+}
+
+    .about-me .title h3 {
+        font-size: 2rem;
+    }
+
+/* my statistics */
+.my-statistics {
+    margin-top: 1.5rem;
+    margin-bottom: 2rem;
+    width: 100%;
+}
+
+    .my-statistics h3 {
+        margin: 2rem;
+        font-size: 2rem;
+    }
+
+.my-statistics__card {
+    background-color: var(--section-background-color);
+    border-radius: 20px;
+    padding: 2rem 3rem 3rem;
+    width: 100%;
+
+}
+
+.my-statistics__row + .my-statistics__row {
+    margin-top: 2rem;
+}
+
+.my-statistics__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--dark-color);
+}
+
+.my-statistics__bar {
+    margin-top: 0.4rem;
+    height: 0.5rem;
+    background-color: rgba(39, 37, 47, 0.12);
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+    .my-statistics__bar > span {
+        display: block;
+        height: 100%;
+        background-color: var(--theme-color);
+        border-radius: 999px;
+    }

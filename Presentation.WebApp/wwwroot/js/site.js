@@ -4,6 +4,7 @@
     items.forEach(item => {
         const trigger = item.querySelector('.accordion-trigger');
 
+        // Initiera öppet läge om aria-expanded redan är true.
         if (trigger.getAttribute('aria-expanded') === 'true') {
             item.classList.add('is-open');
         }
@@ -11,12 +12,14 @@
         trigger.addEventListener('click', () => {
             const isExpanded = trigger.getAttribute('aria-expanded') === 'true';
 
+            // Stäng alla andra items.
             items.forEach(otherItem => {
                 const otherTrigger = otherItem.querySelector('.accordion-trigger');
                 otherTrigger.setAttribute('aria-expanded', 'false');
                 otherItem.classList.remove('is-open');
             });
 
+            // Öppna aktuellt item om det var stängt.
             if (!isExpanded) {
                 trigger.setAttribute('aria-expanded', 'true');
                 item.classList.add('is-open');
@@ -27,27 +30,32 @@
 
 /*
     Realtidsvalidering för alla formulär som använder MVC TagHelpers + DataAnnotations.
-
 */
 
 (() => {
+    // Säker CSS-escaping för selectorer.
     const cssEscape = (value) => {
         if (window.CSS?.escape) return window.CSS.escape(value);
         return String(value).replace(/["\\]/g, '\\$&');
     };
 
+    // Hjälpare för tomma strängar.
     const isBlank = (v) => !v || v.trim().length === 0;
 
+    // Enkel e-postvalidering.
     const isValidEmail = (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 
+    // Enkel telefonvalidering.
     const isValidPhone = (value) => /^[\d\s()+\-\.]{6,}$/.test(value);
 
+    // Hämtar felmeddelande-span kopplad till ett fält.
     const getMessageSpan = (form, field) => {
         const name = field.getAttribute('name');
         if (!name) return null;
         return form.querySelector(`[data-valmsg-for="${cssEscape(name)}"]`);
     };
 
+    // Sätter och stylar felmeddelandet för ett fält.
     const setFieldMessage = (form, field, message) => {
         const msg = getMessageSpan(form, field);
         if (!msg) return;
@@ -63,6 +71,7 @@
         }
     };
 
+    // Hämtar "andra fältet" från data-val-equalto-other (t.ex. ConfirmPassword).
     const getOtherFieldByExpression = (form, expression) => {
         // MVC brukar generera t.ex. "*.Password" i data-val-equalto-other.
         // Sista delen plockas ut och matchar på name som slutar med ".Password" eller exakt "Password".
@@ -73,6 +82,7 @@
         return candidates.find(x => x.name === cleaned || x.name.endsWith(`.${cleaned}`)) ?? null;
     };
 
+    // Validerar ett fält och visar fel om det behövs.
     const validateField = (form, field, touched, forceShowMessage = false) => {
         const name = field.getAttribute('name') ?? '';
         const value = field.value ?? '';
@@ -149,6 +159,7 @@
         return true;
     };
 
+    // Kopplar validering till fält och submit.
     const initFormValidation = (form) => {
         // Initierar bara formulär som faktiskt har MVC validation-attribut.
         const fields = Array.from(form.querySelectorAll('input[data-val="true"][name], textarea[data-val="true"][name], select[data-val="true"][name]'));
@@ -157,18 +168,20 @@
         const touched = new Set();
 
         fields.forEach(field => {
+            // Visa fel efter att fältet blivit "touched".
             field.addEventListener('blur', () => {
                 const name = field.getAttribute('name');
                 if (name) touched.add(name);
                 validateField(form, field, touched, true);
             });
 
+            // Realtidsvalidering medan man skriver, men först efter "touched".
             field.addEventListener('input', () => {
-                // Realtidsvalidering medan man skriver, men först efter att fältet blivit "touched".
                 validateField(form, field, touched, false);
             });
         });
 
+        // Validera alla fält vid submit.
         form.addEventListener('submit', (e) => {
             let allOk = true;
 
@@ -185,16 +198,19 @@
         });
     };
 
+    // Initiera validering för alla formulär.
     document.querySelectorAll('form').forEach(initFormValidation);
 })();
 
 
+// Mobilmeny: öppna/stäng flyout med backdrop och Escape-stöd.
 (() => {
     const TRANSITION_MS = 200;
 
     const buttons = document.querySelectorAll('#mobile-menu-button[data-target]');
     if (buttons.length === 0) return;
 
+    // Sätter öppet/stängt läge för menyn.
     const setOpen = (button, flyout, backdrop, isOpen) => {
         button.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
 
@@ -222,6 +238,7 @@
         const backdrop = header.querySelector('#mobile-menu-backdrop') ?? document.querySelector('#mobile-menu-backdrop');
         if (!flyout || !backdrop) return;
 
+        // Beräknar rätt position för flyouten.
         const updateFlyoutPosition = () => {
             const rect = header.getBoundingClientRect();
             const top = Math.max(8, rect.bottom + 12); 
@@ -238,16 +255,19 @@
             });
         };
 
+        // Uppdatera position vid resize/scroll när menyn är öppen.
         const onViewportChange = () => {
             const isOpen = button.getAttribute('aria-expanded') === 'true';
             if (isOpen) schedulePositionUpdate();
         };
 
+        // Initiera stängt läge.
         button.setAttribute('aria-expanded', 'false');
         flyout.hidden = true;
         backdrop.hidden = true;
         flyout.classList.remove('is-open');
 
+        // Toggle vid klick.
         button.addEventListener('click', () => {
             const isOpen = button.getAttribute('aria-expanded') === 'true';
 
@@ -263,12 +283,14 @@
             setOpen(button, flyout, backdrop, !isOpen);
         });
 
+        // Klick på backdrop stänger menyn.
         backdrop.addEventListener('click', () => {
             window.removeEventListener('resize', onViewportChange);
             window.removeEventListener('scroll', onViewportChange);
             setOpen(button, flyout, backdrop, false);
         });
 
+        // Klick på länk stänger menyn.
         flyout.addEventListener('click', (e) => {
             const link = e.target?.closest?.('a');
             if (!link) return;
@@ -278,6 +300,7 @@
             setOpen(button, flyout, backdrop, false);
         });
 
+        // Escape stänger menyn.
         document.addEventListener('keydown', (e) => {
             if (e.key !== 'Escape') return;
 
@@ -287,6 +310,37 @@
             window.removeEventListener('resize', onViewportChange);
             window.removeEventListener('scroll', onViewportChange);
             setOpen(button, flyout, backdrop, false);
+        });
+    });
+})();
+
+
+(() => {
+    // Öppnar dialogrutor som är kopplade via data-dialog-target.
+    const triggers = document.querySelectorAll('[data-dialog-target]');
+    if (triggers.length === 0) return;
+
+    // Stänger dialogrutor via knappar med data-dialog-close.
+    const closeButtons = document.querySelectorAll('[data-dialog-close]');
+
+    triggers.forEach(trigger => {
+        const dialogId = trigger.getAttribute('data-dialog-target');
+        if (!dialogId) return;
+
+        const dialog = document.getElementById(dialogId);
+        if (!(dialog instanceof HTMLDialogElement)) return;
+
+        // Öppna dialogrutan när användaren klickar på knappen.
+        trigger.addEventListener('click', () => {
+            if (!dialog.open) dialog.showModal();
+        });
+    });
+
+    closeButtons.forEach(button => {
+        // Stäng dialogrutan när användaren klickar på "Nej".
+        button.addEventListener('click', () => {
+            const dialog = button.closest('dialog');
+            if (dialog && dialog.open) dialog.close();
         });
     });
 })();

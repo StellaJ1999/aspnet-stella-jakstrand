@@ -86,6 +86,21 @@ public class AccountController(IAuthService authService, IUserService userServic
 
     }
 
+    [HttpPost("remove-account")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> RemoveAccount()
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (string.IsNullOrWhiteSpace(userId))
+            return RedirectToAction(nameof(SignOut));
+
+        var result = await userService.DeleteUserAsync(userId);
+        if (!result.Succeeded)
+            return RedirectToAction(nameof(AboutMe));
+
+        await authService.SignOutUserAsync();
+        return Redirect("/");
+    }
 
 
     #region sign-out
