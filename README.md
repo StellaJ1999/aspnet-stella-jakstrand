@@ -23,5 +23,23 @@ CoreFitness is a .NET 10 web application for managing a gym’s public site, mem
 - `Infrastructure` - EF Core, Identity, repositories, and external integrations
 - `Tests` - Unit and integration tests
 
+## Getting Started
+You can run the app locally with the .NET 10 SDK installed. Configuration is split between production and development settings, and external login settings can be supplied via user secrets.
+
+### Prerequisites
+- .NET 10 SDK
+- EF Core tooling (optional, for migrations)
+- SQLite or SQL Server depending on environment
+
+### Configuration
+- Connection strings:
+  - `Presentation.WebApp/appsettings.json`
+  - `Presentation.WebApp/appsettings.Development.json`
+- Google login (optional) uses:
+  - `Authentication:Google:ClientId`
+  - `Authentication:Google:ClientSecret`
+
+### Run
+
 
 
